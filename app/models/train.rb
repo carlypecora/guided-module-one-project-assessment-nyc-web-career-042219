@@ -13,7 +13,6 @@ class Train < ActiveRecord::Base
 
     def self.return_train_obj(commute_input)
         train = self.find_or_create_by(line: commute_input)
-        train.save
     end
 
 end

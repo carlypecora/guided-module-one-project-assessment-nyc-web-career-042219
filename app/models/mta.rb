@@ -83,11 +83,10 @@ def test
 	welcome
 	firstname_input = get_firstname_input
 	user_obj = verify_user(firstname_input)
-	# binding.pry
-	user_obj
 	commute_input = get_commute_input
-	Train.return_train_obj(commute_input)
-	
+	train_obj = Train.return_train_obj(commute_input)
+	commute_obj = Commute.find_or_create_by(user: user_obj, train: train_obj)
+	binding.pry
 	match_commute_input_to_line(commute_input)
 end
 
