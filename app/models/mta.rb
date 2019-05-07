@@ -14,6 +14,8 @@ require 'crack/json'
 require 'crack/xml'
 require 'nokogiri'
 
+require 'annotate'
+
 def get_status_alert
 	data = Net::HTTP.get(URI.parse('http://web.mta.info/status/serviceStatus.txt'))
 	Crack::XML.parse(data)["service"]["subway"]["line"]
