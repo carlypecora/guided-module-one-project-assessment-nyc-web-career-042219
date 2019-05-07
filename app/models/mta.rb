@@ -61,6 +61,10 @@ def get_commute_input
 	commute_input.upcase
 end
 
+
+	
+
+
 def match_commute_input_to_line(commute_input)
 	match = get_status_alert.find do |line| 
 		line["name"].include?(commute_input)
@@ -78,10 +82,12 @@ end
 def test
 	welcome
 	firstname_input = get_firstname_input
-	x = verify_user(firstname_input)
-	binding.pry
-	x
-	commute_input = get_commute_input	
+	user_obj = verify_user(firstname_input)
+	# binding.pry
+	user_obj
+	commute_input = get_commute_input
+	Train.return_train_obj(commute_input)
+	
 	match_commute_input_to_line(commute_input)
 end
 
