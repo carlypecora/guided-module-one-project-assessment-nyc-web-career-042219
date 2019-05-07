@@ -36,11 +36,11 @@ def match_commute_input_to_line(commute_input)
 	status = match["status"]
 	message = match["text"]
 	if message.nil?
-		status
+		puts status
 	else
 		puts Nokogiri::HTML(message).text
-		status
-end
+
+	end
 end	
 
 def test
