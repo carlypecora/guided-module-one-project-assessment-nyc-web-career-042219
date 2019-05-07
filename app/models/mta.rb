@@ -34,18 +34,19 @@ end
 
 def verify_user(firstname_input)
 	check = User.find_all_by_first_name(firstname_input)
-	if check.nil?
-		# reference user method create_new_user
-		puts "Welcome new user, please enter your full name."
-	elsif
 		# another method
-		check.length == 1
+	if check.length == 1
 		puts "Is this you? (Y/N)"
 		check
-	else
+	elsif check.length > 1
 		# another method
 		puts "Which number are you? (#)"
 		check
+	else
+		# reference user method create_new_user
+		puts "Welcome new user, please enter your first and last name."
+		fullname_input = gets.chomp
+		User.create_new_user(fullname_input)
 	end
 end
 

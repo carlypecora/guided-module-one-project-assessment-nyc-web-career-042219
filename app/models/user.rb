@@ -25,8 +25,11 @@ class User < ActiveRecord::Base
         end
     end
 
-    # def create_new_user
-    # end
+    def self.create_new_user(fullname_input)
+        first_name = fullname_input.split[0]
+        last_name = fullname_input.split[1]
+        User.create(first_name: first_name, last_name: last_name)
+    end
 
 
 end
