@@ -8,7 +8,7 @@
 #
 
 class Train < ActiveRecord::Base
-    has_many :users
+    has_many :commutes
     has_many :users, through: :commutes
 
     def self.return_train_obj(commute_input)
