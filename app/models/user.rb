@@ -13,13 +13,20 @@ class User < ActiveRecord::Base
     has_many :trains, through: :commutes
 
     def full_name
-    	puts "#{self.first_name} #{self.last_name}"
+        "#{self.first_name} #{self.last_name}"
     end
 
     def self.find_all_by_first_name(name)
-    	users = self.where(first_name: name)
-    	users.each { |user| user.full_name }
+        users = self.where(first_name: name)
+        counter = 1
+        users.each do |user| 
+            puts "#{counter}. #{user.full_name}"
+            counter += 1
+        end
     end
+
+    # def create_new_user
+    # end
 
 
 end

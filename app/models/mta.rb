@@ -16,6 +16,7 @@ require 'nokogiri'
 
 require 'annotate'
 
+
 def get_status_alert
 	data = Net::HTTP.get(URI.parse('http://web.mta.info/status/serviceStatus.txt'))
 	Crack::XML.parse(data)["service"]["subway"]["line"]
@@ -23,10 +24,36 @@ end
 
 def welcome
 	puts "Welcome to your MTA commute."
-	puts "What train line are you taking after class?"
 end
 
+def get_firstname_input
+	puts "What is your first name?"
+	firstname_input = gets.chomp
+	firstname_input.capitalize
+end
+
+def verify_user(firstname_input)
+	check = User.find_all_by_first_name(firstname_input)
+	if check.nil?
+		# reference user method create_new_user
+		puts "Welcome new user, please enter your full name."
+	elsif
+		# another method
+		check.length == 1
+		puts "Is this you? (Y/N)"
+		check
+	else
+		# another method
+		puts "Which number are you? (#)"
+		check
+	end
+end
+
+
+
+
 def get_commute_input
+	puts "What train line are you taking after class?"
 	commute_input = gets.chomp
 	commute_input.upcase
 end
@@ -47,6 +74,8 @@ end
 
 def test
 	welcome
+	firstname_input = get_firstname_input
+	verify_user(firstname_input)
 	commute_input = get_commute_input	
 	match_commute_input_to_line(commute_input)
 end
