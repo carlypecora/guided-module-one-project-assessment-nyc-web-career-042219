@@ -7,6 +7,7 @@
 #  last_name    :string
 #  neighborhood :string
 #
+require 'pry'
 
 class User < ActiveRecord::Base
     has_many :commutes
@@ -28,8 +29,17 @@ class User < ActiveRecord::Base
     def self.create_new_user(fullname_input)
         first_name = fullname_input.split[0]
         last_name = fullname_input.split[1]
-        User.create(first_name: first_name, last_name: last_name)
+        user = User.create(first_name: first_name, last_name: last_name)
+        user.save
+        user
     end
 
+    def self.welcome_and_create_new_user
+        puts "Welcome new user, please enter your first and last name."
+        fullname_input = gets.chomp
+        user = User.create_new_user(fullname_input)
+        user.save
+        user
+    end
 
 end

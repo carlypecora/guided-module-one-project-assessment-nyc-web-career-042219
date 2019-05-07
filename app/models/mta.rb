@@ -34,24 +34,22 @@ end
 
 def verify_user(firstname_input)
 	check = User.find_all_by_first_name(firstname_input)
-		# another method
 	if check.length == 1
 		puts "Is this you? (Y/N)"
 		check
+		response = gets.chomp
+		if response == "N" || response == "n" || response == "no" || response == "No"
+			User.welcome_and_create_new_user
+			#if response == y, it will just skip and go to the next one
+		end
 	elsif check.length > 1
 		# another method
 		puts "Which number are you? (#)"
 		check
 	else
-		# reference user method create_new_user
-		puts "Welcome new user, please enter your first and last name."
-		fullname_input = gets.chomp
-		User.create_new_user(fullname_input)
+		User.welcome_and_create_new_user
 	end
 end
-
-
-
 
 def get_commute_input
 	puts "What train line are you taking after class?"
