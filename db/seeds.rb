@@ -7,4 +7,6 @@ jess.update(neighborhood: "Flatbush")
 carly = User.find_or_create_by(first_name: "Carly", last_name: "Pecora")
 carly.update(neighborhood: "Williamsburg")
 
+another_jess = User.find_or_create_by(first_name: "Jessica", last_name: "M")
+
 binding.pry
