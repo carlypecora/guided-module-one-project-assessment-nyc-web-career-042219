@@ -1,6 +1,10 @@
 .DS_Store
 .idea
 
+secret.rb
+.env
+justincase.txt
+
 log
 node_modules
 out
