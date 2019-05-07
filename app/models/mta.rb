@@ -41,11 +41,15 @@ def verify_user(firstname_input)
 		if response == "N" || response == "n" || response == "no" || response == "No"
 			User.welcome_and_create_new_user
 			#if response == y, it will just skip and go to the next one
+		else
+			check[0]
 		end
 	elsif check.length > 1
 		# another method
 		puts "Which number are you? (#)"
 		check
+		user_input = gets.chomp
+		check[user_input.to_i - 1]
 	else
 		User.welcome_and_create_new_user
 	end
@@ -74,7 +78,9 @@ end
 def test
 	welcome
 	firstname_input = get_firstname_input
-	verify_user(firstname_input)
+	x = verify_user(firstname_input)
+	binding.pry
+	x
 	commute_input = get_commute_input	
 	match_commute_input_to_line(commute_input)
 end
