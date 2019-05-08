@@ -64,8 +64,8 @@ def verfiy_multiple_users(check)
 	puts "Or if you don't see yourself, enter N"
 	puts 
 	check
-	user_input = gets.chomp
-	if user_input == "N"
+	user_input = gets.chomp.downcase
+	if user_input == "n" || user_input == "no"
 		User.welcome_and_create_new_user
 	else
 		User.welcome_back(check[user_input.to_i - 1])
@@ -85,14 +85,27 @@ def match_commute_input_to_line(commute_input)
 	match = get_status_alert.find do |line| 
 		line["name"].include?(commute_input)
 	end
-	status = match["status"] 
+	status = match["status"]
 	message = match["text"]
 	if message.nil?
+		puts
 		puts status
 	else
+		puts
 		puts Nokogiri::HTML(message).text
 	end
 end	
+
+def get_friend_interest
+	puts
+	puts "Would you like to know who else takes your train? (Y/N)"
+	puts
+	friend_input = gets.chomp.downcase
+	if friend_input == "y" || friend_input == "yes"
+		return
+	end
+end
+
 
 
  # do you want to let your friends know of the service status
@@ -115,10 +128,11 @@ def test
 	welcome
 	firstname_input = get_firstname_input
 	user_obj = verify_user(firstname_input)
-	commute_input = get_commute_input || commute_input = other_method
+	commute_input = get_commute_input
 	train_obj = Train.return_train_obj(commute_input)
 	commute_obj = Commute.find_or_create_by(user: user_obj, train: train_obj)
 	match_commute_input_to_line(commute_input)
+	get_friend_interest
 	user_obj.fellow_users_on_commute(train_obj)
 end
 

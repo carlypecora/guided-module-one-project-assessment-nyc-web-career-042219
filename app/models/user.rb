@@ -61,24 +61,40 @@ class User < ActiveRecord::Base
             puts
             puts "Welcome back, #{user_obj.first_name}! Will you be taking the #{trains_string}? (Y/N)"
             puts
-            response = gets.chomp
-            if response == "N" || response == "No" || response == "n" || response == "no" || response == "NO"
+            response = gets.chomp.downcase
+            if response == "n" || response == "no"
                 return
-            elsif response == "Y" && trains.length == 1
+            elsif trains.length == 1 && response == "y" || response == "yes"
                 match_commute_input_to_line(trains[0])
+                get_friend_interest
                 user_obj.fellow_users_on_commute(Train.find_by(line: trains[0]))
                 exit
+            elsif trains.length > 1 && response == "y" || response == "yes"
+                puts
+                puts "The #{trains_string}?"
+                puts
+                response = gets.chomp
+                match_commute_input_to_line(response)
+                get_friend_interest
+                user_obj.fellow_users_on_commute(Train.find_by(line: response))
             end
         end
     end
 
     def fellow_users_on_commute(train_obj)
-        puts "Who else is on your train"
         array = Commute.all.select do |commute|
             commute.train == train_obj && commute.user != self
         end
-        string = array.map { |commute| commute.user.full_name }.join(", ")
-        puts string
+        if array.length > 0
+            string = array.map { |commute| commute.user.full_name }.join(", ")
+            puts
+            puts string
+            exit
+        else
+            puts
+            puts "No one else is taking this train."
+            exit
+        end
     end
 
 end
