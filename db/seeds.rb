@@ -1,5 +1,5 @@
 require 'pry'
-ActiveRecord::Base.logger = Logger.new(STDOUT)
+# ActiveRecord::Base.logger = Logger.new(STDOUT)
 
 jess = User.find_or_create_by(first_name: "Jessica", last_name: "Lin")
 jess.update(neighborhood: "Flatbush")

@@ -27,8 +27,9 @@ class User < ActiveRecord::Base
     end
 
     def self.create_new_user(fullname_input)
-        first_name = fullname_input.split[0]
-        last_name = fullname_input.split[1]
+        first_name = fullname_input.split[0].capitalize
+        last_name = fullname_input.split[1].capitalize
+        # binding.pry
         user = User.create(first_name: first_name, last_name: last_name)
         user.save
         user
@@ -42,10 +43,24 @@ class User < ActiveRecord::Base
         user
     end
 
+    def self.welcome_back(user_obj)
+        if user_obj.commutes
+            # binding.pry
+            trains = user_obj.commutes.map { |commute| commute.train.line }.join(" or ")
+            puts "Welcome back, #{user_obj.first_name}! Will you be taking the #{trains}?"
+            user_obj
+        elsif !user_obj.commutes
+            get_commute_input 
+
+        end
+    end
+
     def fellow_users_on_commute(train_obj)
-        Commute.all.select do |commute|
+        array = Commute.all.select do |commute|
             commute.train == train_obj
-        end.each { |commute| puts commute.user.full_name }
+        end
+        string = array.map { |commute| commute.user.full_name }.join(", ")
+        puts string
     end
 
 end

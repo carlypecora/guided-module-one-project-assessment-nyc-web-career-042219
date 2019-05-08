@@ -42,6 +42,7 @@ def verify_user(firstname_input)
 			User.welcome_and_create_new_user
 			#if response == y, it will just skip and go to the next one
 		else
+			User.welcome_back(check[0])
 			check[0]
 		end
 	elsif check.length > 1
@@ -54,6 +55,7 @@ def verify_user(firstname_input)
 		if user_input == "N"
 			User.welcome_and_create_new_user
 		else
+			User.welcome_back(check[user_input.to_i - 1])
 			check[user_input.to_i - 1]
 		end
 	else
