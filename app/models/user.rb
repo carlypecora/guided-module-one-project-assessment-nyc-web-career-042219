@@ -56,18 +56,24 @@ class User < ActiveRecord::Base
 
     def self.welcome_back(user_obj)
         if user_obj.commutes.length > 0
-            trains = user_obj.commutes.map { |commute| commute.train.line }.join(" or ")
-            puts "Welcome back, #{user_obj.first_name}! Will you be taking the #{trains}? (Y/N)"
+            trains = user_obj.commutes.map { |commute| commute.train.line }
+            trains_string = trains.join(" or ")
+            puts
+            puts "Welcome back, #{user_obj.first_name}! Will you be taking the #{trains_string}? (Y/N)"
             puts
             response = gets.chomp
             if response == "N" || response == "No" || response == "n" || response == "no" || response == "NO"
-            return
+                return
+            elsif response == "Y" && trains.length == 1
+                match_commute_input_to_line(trains[0])
+                user_obj.fellow_users_on_commute(Train.find_by(line: trains[0]))
+                exit
             end
-        user_obj
         end
     end
 
     def fellow_users_on_commute(train_obj)
+        puts "Who else is on your train"
         array = Commute.all.select do |commute|
             commute.train == train_obj && commute.user != self
         end
