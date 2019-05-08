@@ -45,11 +45,17 @@ def verify_user(firstname_input)
 			check[0]
 		end
 	elsif check.length > 1
-		# another method
+		# give the option of none of these
+		# create a new user
 		puts "Which number are you? (#)"
+		puts "Or if you don't see yourself, enter N"
 		check
 		user_input = gets.chomp
-		check[user_input.to_i - 1]
+		if user_input == "N"
+			User.welcome_and_create_new_user
+		else
+			check[user_input.to_i - 1]
+		end
 	else
 		User.welcome_and_create_new_user
 	end
@@ -102,10 +108,6 @@ def test
 	train_obj = Train.return_train_obj(commute_input)
 	commute_obj = Commute.find_or_create_by(user: user_obj, train: train_obj)
 	match_commute_input_to_line(commute_input)
-<<<<<<< HEAD
-	# binding.pry
-=======
->>>>>>> b99c32bae769f23b7d2b5277faba8fb1b089639c
 	puts "Who else is on your train"
 	user_obj.fellow_users_on_commute(train_obj)
 end
