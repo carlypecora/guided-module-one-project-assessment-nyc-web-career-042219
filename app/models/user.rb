@@ -44,12 +44,12 @@ class User < ActiveRecord::Base
         user
     end
 
-    def self.welcome_and_create_new_user
+    def self.welcome_and_create_new_user(first_name)
         puts
-        puts "Welcome new user, please enter your first and last name."
+        puts "Welcome #{first_name}, please enter your last name."
         puts
-        fullname_input = gets.chomp
-        user = User.create_new_user(fullname_input)
+        lastname_input = gets.chomp
+        user = User.create(first_name: first_name, last_name: lastname_input)
         user.save
         user
     end
@@ -89,10 +89,13 @@ class User < ActiveRecord::Base
             string = array.map { |commute| commute.user.full_name }.join(", ")
             puts
             puts string
+            puts
             exit
         else
             puts
             puts "No one else is taking this train."
+            puts
+            puts "Thanks for using MTA commute! Stand clear of the closing doors please."
             exit
         end
     end

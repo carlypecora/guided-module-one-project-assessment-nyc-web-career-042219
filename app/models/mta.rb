@@ -41,7 +41,7 @@ def verify_user(firstname_input)
 	elsif check.length > 1
 		verfiy_multiple_users(check)
 	else
-		User.welcome_and_create_new_user
+		User.welcome_and_create_new_user(firstname_input)
 	end
 end
 
@@ -50,7 +50,7 @@ def verify_single_user(check)
 	check
 	response = gets.chomp
 	if response == "N" || response == "n" || response == "no" || response == "No"
-		User.welcome_and_create_new_user
+		User.welcome_and_create_new_user(check.first.first_name)
 	else
 		User.welcome_back(check[0])
 		check[0]
@@ -66,7 +66,7 @@ def verfiy_multiple_users(check)
 	check
 	user_input = gets.chomp.downcase
 	if user_input == "n" || user_input == "no"
-		User.welcome_and_create_new_user
+		User.welcome_and_create_new_user(check.first.first_name)
 	else
 		User.welcome_back(check[user_input.to_i - 1])
 		check[user_input.to_i - 1]
