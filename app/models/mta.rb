@@ -102,7 +102,7 @@ def test
 	train_obj = Train.return_train_obj(commute_input)
 	commute_obj = Commute.find_or_create_by(user: user_obj, train: train_obj)
 	match_commute_input_to_line(commute_input)
-	binding.pry
+	# binding.pry
 	puts "Who else is on your train"
 	user_obj.fellow_users_on_commute(train_obj)
 end

@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
 
     def fellow_users_on_commute(train_input)
         Commute.all.select do |commute|
-            commute.train = train_input
+            commute.train == train_input
         end.each { |commute| puts commute.user.full_name }
     end
 

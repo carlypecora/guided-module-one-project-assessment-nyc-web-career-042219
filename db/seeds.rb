@@ -9,6 +9,23 @@ carly.update(neighborhood: "Williamsburg")
 
 another_jess = User.find_or_create_by(first_name: "Jessica", last_name: "M")
 
-
+alex = User.find_or_create_by(first_name: "Alex", last_name: "G.")
+zach = User.find_or_create_by(first_name: "Zach", last_name: "V.")
+gabbie = User.find_or_create_by(first_name: "Gabbie", last_name: "P.")
+augustus = User.find_or_create_by(first_name: "Agustus", last_name: "Kirby")
+jennifer = User.find_or_create_by(first_name: "Jennifer", last_name: "Oh")
+ashley = User.find_or_create_by(first_name: "Ashley", last_name: "Westcott")
+yasmine = User.find_or_create_by(first_name: "Yasmine", last_name: "Hartung")
+catherine = User.find_or_create_by(first_name: "Catherine", last_name: "Batsoula")
+pamyk = User.find_or_create_by(first_name: "Pamyk", last_name: "Charyyeva")
+christian = User.find_or_create_by(first_name: "Christian", last_name: "Duncan")
+adam = User.find_or_create_by(first_name: "Adam", last_name: "Sultanov")
+gavin = User.find_or_create_by(first_name: "Gavin", last_name: "O'Connor")
+jason = User.find_or_create_by(first_name: "Jason", last_name: "Gomez")
+jake = User.find_or_create_by(first_name: "Jake", last_name: "Lovitz")
+henry = User.find_or_create_by(first_name: "Henry", last_name: "Koehler")
+tim = User.find_or_create_by(first_name: "Tim", last_name: "Koar")
+won = User.find_or_create_by(first_name: "Won", last_name: "Kim")
+qun = User.find_or_create_by(first_name: "Qun Li", last_name: "Huang")
 
 binding.pry
