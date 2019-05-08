@@ -27,6 +27,7 @@ henry = User.find_or_create_by(first_name: "Henry", last_name: "Koehler")
 tim = User.find_or_create_by(first_name: "Tim", last_name: "Koar")
 won = User.find_or_create_by(first_name: "Won", last_name: "Kim")
 qun = User.find_or_create_by(first_name: "Qun", last_name: "Huang")
+jed = User.find_or_create_by(first_name: "Jed", last_name: "Spears")
 
 a = Train.find_or_create_by(line: "A")
 j = Train.find_or_create_by(line: "J")
@@ -34,7 +35,8 @@ four = Train.find_or_create_by(line: "4")
 five = Train.find_or_create_by(line: "5")
 
 comm1 = Commute.find_or_create_by(user: jess, train: four)
-comm1 = Commute.find_or_create_by(user: carly, train: j)
+comm2 = Commute.find_or_create_by(user: carly, train: j)
+comm3 = Commute.find_or_create_by(user: jess, train: five)
 
 
 # binding.pry

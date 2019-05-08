@@ -57,11 +57,13 @@ class User < ActiveRecord::Base
     def self.welcome_back(user_obj)
         if user_obj.commutes.length > 0
             trains = user_obj.commutes.map { |commute| commute.train.line }.join(" or ")
-            puts "Welcome back, #{user_obj.first_name}! Will you be taking the #{trains}?"
+            puts "Welcome back, #{user_obj.first_name}! Will you be taking the #{trains}? (Y/N)"
             puts
-            user_obj
-        elsif !user_obj.commutes
-            get_commute_input 
+            response = gets.chomp
+            if response == "N" || response == "No" || response == "n" || response == "no" || response == "NO"
+            return
+            end
+        user_obj
         end
     end
 
