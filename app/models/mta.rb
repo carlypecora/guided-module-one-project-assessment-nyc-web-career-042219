@@ -24,10 +24,12 @@ end
 
 def welcome
 	puts "Welcome to your MTA commute."
+	puts 
 end
 
 def get_firstname_input
 	puts "What is your first name?"
+	puts 
 	firstname_input = gets.chomp
 	firstname_input.capitalize
 end
@@ -35,38 +37,46 @@ end
 def verify_user(firstname_input)
 	check = User.find_all_by_first_name(firstname_input)
 	if check.length == 1
-		puts "Is this you? (Y/N)"
-		check
-		response = gets.chomp
-		if response == "N" || response == "n" || response == "no" || response == "No"
-			User.welcome_and_create_new_user
-			#if response == y, it will just skip and go to the next one
-		else
-			User.welcome_back(check[0])
-			check[0]
-		end
+		verify_single_user(check)
 	elsif check.length > 1
-		# give the option of none of these
-		# create a new user
-		puts "Which number are you? (#)"
-		puts "Or if you don't see yourself, enter N"
-		check
-		user_input = gets.chomp
-		if user_input == "N"
-			User.welcome_and_create_new_user
-		else
-			User.welcome_back(check[user_input.to_i - 1])
-			check[user_input.to_i - 1]
-		end
+		verfiy_multiple_users(check)
 	else
 		User.welcome_and_create_new_user
 	end
 end
 
-# Welcome back Jessica, are you taking your usual commute with the 4.
+def verify_single_user(check)
+	puts 
+	check
+	response = gets.chomp
+	if response == "N" || response == "n" || response == "no" || response == "No"
+		User.welcome_and_create_new_user
+	else
+		User.welcome_back(check[0])
+		check[0]
+	end
+end
+
+def verfiy_multiple_users(check)
+	puts
+	puts "Which number are you? (#)"
+	puts 
+	puts "Or if you don't see yourself, enter N"
+	puts 
+	check
+	user_input = gets.chomp
+	if user_input == "N"
+		User.welcome_and_create_new_user
+	else
+		User.welcome_back(check[user_input.to_i - 1])
+		check[user_input.to_i - 1]
+	end
+end
 
 def get_commute_input
+	puts
 	puts "What train line are you taking after class?"
+	puts 
 	commute_input = gets.chomp
 	commute_input.upcase
 end

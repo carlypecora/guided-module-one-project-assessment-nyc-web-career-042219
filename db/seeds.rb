@@ -12,7 +12,7 @@ another_jess = User.find_or_create_by(first_name: "Jessica", last_name: "M")
 alex = User.find_or_create_by(first_name: "Alex", last_name: "G.")
 zach = User.find_or_create_by(first_name: "Zach", last_name: "V.")
 gabbie = User.find_or_create_by(first_name: "Gabbie", last_name: "P.")
-augustus = User.find_or_create_by(first_name: "Agustus", last_name: "Kirby")
+augustus = User.find_or_create_by(first_name: "Augustus", last_name: "Kirby")
 jennifer = User.find_or_create_by(first_name: "Jennifer", last_name: "Oh")
 ashley = User.find_or_create_by(first_name: "Ashley", last_name: "Westcott")
 yasmine = User.find_or_create_by(first_name: "Yasmine", last_name: "Hartung")
@@ -26,6 +26,15 @@ jake = User.find_or_create_by(first_name: "Jake", last_name: "Lovitz")
 henry = User.find_or_create_by(first_name: "Henry", last_name: "Koehler")
 tim = User.find_or_create_by(first_name: "Tim", last_name: "Koar")
 won = User.find_or_create_by(first_name: "Won", last_name: "Kim")
-qun = User.find_or_create_by(first_name: "Qun Li", last_name: "Huang")
+qun = User.find_or_create_by(first_name: "Qun", last_name: "Huang")
 
-binding.pry
+a = Train.find_or_create_by(line: "A")
+j = Train.find_or_create_by(line: "J")
+four = Train.find_or_create_by(line: "4")
+five = Train.find_or_create_by(line: "5")
+
+comm1 = Commute.find_or_create_by(user: jess, train: four)
+comm1 = Commute.find_or_create_by(user: carly, train: j)
+
+
+# binding.pry
