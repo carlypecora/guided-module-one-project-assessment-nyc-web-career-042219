@@ -29,7 +29,7 @@ end
 
 def get_firstname_input
 	puts "What is your first name?"
-	puts 
+	puts
 	firstname_input = gets.chomp
 	firstname_input.capitalize
 end
@@ -48,12 +48,17 @@ end
 def verify_single_user(check)
 	puts 
 	check
-	response = gets.chomp
-	if response == "N" || response == "n" || response == "no" || response == "No"
+	response = gets.chomp.downcase
+	if response == "n" || response == "no" 
 		User.welcome_and_create_new_user(check.first.first_name)
-	else
+	elsif response == "y" || response == "yes" 
 		User.welcome_back(check[0])
 		check[0]
+	else 
+		puts
+		puts "Invalid input. Please try again."
+		puts "#{check.first.full_name}? (Y/N)"
+		verify_single_user(check)
 	end
 end
 
@@ -92,6 +97,8 @@ def match_commute_input_to_line(commute_input)
 		puts status
 	else
 		puts
+		puts status
+		puts 
 		puts Nokogiri::HTML(message).text
 	end
 end	

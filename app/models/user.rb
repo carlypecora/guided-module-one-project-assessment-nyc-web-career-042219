@@ -45,7 +45,6 @@ class User < ActiveRecord::Base
     end
 
     def self.welcome_and_create_new_user(first_name)
-        puts
         puts "Welcome #{first_name}, please enter your last name."
         puts
         lastname_input = gets.chomp
@@ -77,6 +76,7 @@ class User < ActiveRecord::Base
                 match_commute_input_to_line(response)
                 get_friend_interest
                 user_obj.fellow_users_on_commute(Train.find_by(line: response))
+                #TODO: Add `else` to account for `n`/`no`.
             end
         end
     end
