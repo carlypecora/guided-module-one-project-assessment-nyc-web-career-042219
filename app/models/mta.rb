@@ -100,6 +100,8 @@ def match_commute_input_to_line(commute_input)
 	if match.nil?
 		puts
 		puts "Invalid input."
+		train = Train.find_by(line: commute_input)
+        Commute.where(train: train).destroy_all
 		new_commute_input = get_commute_input
 		match_commute_input_to_line(new_commute_input)
 		return

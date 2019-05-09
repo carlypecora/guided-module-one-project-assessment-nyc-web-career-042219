@@ -1,12 +1,4 @@
-# == Schema Information
-#
-# Table name: users
-#
-#  id           :integer          not null, primary key
-#  first_name   :string
-#  last_name    :string
-#  neighborhood :string
-#
+
 require 'pry'
 
 class User < ActiveRecord::Base
@@ -53,9 +45,13 @@ class User < ActiveRecord::Base
     end
 
     def self.verify_train_selection(user_obj, trains_string, response, trains)
-        if !trains_string.include? response
+        if !trains_string.include?(response)
             puts
             puts "Invalid input. Please try again."
+            train = Train.find_by(line: response)
+            binding.pry
+            Commute.destroy_all(train: train)
+            self.reload
             get_train_selection(trains_string)
             selecting_saved_commute(user_obj, trains)
         else
