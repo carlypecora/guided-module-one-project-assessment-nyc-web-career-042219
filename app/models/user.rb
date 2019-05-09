@@ -65,9 +65,10 @@ class User < ActiveRecord::Base
 
     def self.selecting_saved_commute(user_obj, trains)
         match_commute_input_to_line(trains[0])
-        get_friend_interest
+        get_friend_interest(user_obj)
         user_obj.fellow_users_on_commute(Train.find_by(line: trains[0]))
-        exit
+        user_obj.view_profile?
+        # exit
     end
 
     def self.get_train_selection(trains_string)
@@ -109,27 +110,46 @@ class User < ActiveRecord::Base
             puts
             puts string
             puts
-            exit
+            return
+            # exit
         else
             puts
             puts "No one else is taking this train."
             puts
-            puts "Thanks for using MTA commute! Stand clear of the closing doors please."
-            exit
+            view_profile?
+            # puts "Thanks for using MTA commute! Stand clear of the closing doors please."
+            # exit
         end
     end
 
     def view_profile?
          puts "Would you like to view your user profile? (Y/N)"
+         puts
          profile_input = gets.chomp.downcase
-         profile_input
+         profile_options(profile_input)
     end
 
-    def profile_response(profile_input)
+    def profile_options(profile_input)
         if profile_input == "y" || profile_input == "yes"
-            puts "Great, #{user_obj.first_name}. What would you like to do?"
+            puts
+            puts "Great, #{self.first_name}. What would you like to do?"
+            # update user name
+            # view commute trains
+            # update commute trains
+            # delete commute trains
+            # add commute train
+            # view friends on your commute
+            exit
+        elsif profile_input == "n" || profile_input == "no"
+            puts
+            puts "Okay, thanks for using the MTAlert App.\nCarly & Jess remind you to stand clear of the closing doors, please!"
+            puts
+            exit
         else
-           puts "Carly & Jess remind you to stand clear of the closing doors, please!"
+            puts
+            puts "Invalid input. Please try again"
+            puts
+            view_profile?
         end
     end
 

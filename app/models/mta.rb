@@ -117,7 +117,7 @@ def match_commute_input_to_line(commute_input)
 	end
 end	
 
-def get_friend_interest
+def get_friend_interest(user_obj)
 	puts
 	puts "Would you like to know who else takes your train? (Y/N)"
 	puts
@@ -126,10 +126,9 @@ def get_friend_interest
 		return
 	else
 		puts
-		puts "Okay, thanks for using the MTAlert App."
-		puts "Carly & Jess remind you to stand clear of the closing doors, please!"
+		puts "Okay."
 		puts
-		exit
+		user_obj.view_profile?
 	end
 end
 
@@ -159,8 +158,9 @@ def test
 	train_obj = Train.return_train_obj(commute_input)
 	commute_obj = Commute.find_or_create_by(user: user_obj, train: train_obj)
 	match_commute_input_to_line(commute_input)
-	get_friend_interest
+	get_friend_interest(user_obj)
 	user_obj.fellow_users_on_commute(train_obj)
+	user_obj.view_profile?
 end
 
 
