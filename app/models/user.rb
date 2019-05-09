@@ -38,7 +38,6 @@ class User < ActiveRecord::Base
     def self.create_new_user(fullname_input)
         first_name = fullname_input.split[0].capitalize
         last_name = fullname_input.split[1].capitalize
-        # binding.pry
         user = User.create(first_name: first_name, last_name: last_name)
         user.save
         user
@@ -53,6 +52,31 @@ class User < ActiveRecord::Base
         user
     end
 
+    def self.verify_train_selection(user_obj, trains_string, response, trains)
+        if !trains_string.include? response
+            puts
+            puts "Invalid input. Please try again."
+            get_train_selection(trains_string)
+            selecting_saved_commute(user_obj, trains)
+        else
+            selecting_saved_commute(user_obj, trains)
+        end
+    end
+
+    def self.selecting_saved_commute(user_obj, trains)
+        match_commute_input_to_line(trains[0])
+        get_friend_interest
+        user_obj.fellow_users_on_commute(Train.find_by(line: trains[0]))
+        exit
+    end
+
+    def self.get_train_selection(trains_string)
+        puts
+        puts "The #{trains_string}?"
+        puts
+        response = gets.chomp
+    end
+
     def self.welcome_back(user_obj)
         if user_obj.commutes.length > 0
             trains = user_obj.commutes.map { |commute| commute.train.line }
@@ -64,19 +88,14 @@ class User < ActiveRecord::Base
             if response == "n" || response == "no"
                 return
             elsif trains.length == 1 && response == "y" || response == "yes"
-                match_commute_input_to_line(trains[0])
-                get_friend_interest
-                user_obj.fellow_users_on_commute(Train.find_by(line: trains[0]))
-                exit
+                selecting_saved_commute(user_obj, trains)
             elsif trains.length > 1 && response == "y" || response == "yes"
+                response = get_train_selection(trains_string)
+                verify_train_selection(user_obj, trains_string, response, trains)
+            else
                 puts
-                puts "The #{trains_string}?"
-                puts
-                response = gets.chomp
-                match_commute_input_to_line(response)
-                get_friend_interest
-                user_obj.fellow_users_on_commute(Train.find_by(line: response))
-                #TODO: Add `else` to account for `n`/`no`.
+                puts "Invalid input. Please try again."
+                self.welcome_back(user_obj)
             end
         end
     end
@@ -97,6 +116,20 @@ class User < ActiveRecord::Base
             puts
             puts "Thanks for using MTA commute! Stand clear of the closing doors please."
             exit
+        end
+    end
+
+    def view_profile?
+         puts "Would you like to view your user profile? (Y/N)"
+         profile_input = gets.chomp.downcase
+         profile_input
+    end
+
+    def profile_response(profile_input)
+        if profile_input == "y" || profile_input == "yes"
+            puts "Great, #{user_obj.first_name}. What would you like to do?"
+        else
+           puts "Carly & Jess remind you to stand clear of the closing doors, please!"
         end
     end
 

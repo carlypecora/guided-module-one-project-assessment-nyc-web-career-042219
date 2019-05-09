@@ -23,7 +23,7 @@ def get_status_alert
 end
 
 def welcome
-	puts "Welcome to your MTA commute."
+	puts "Welcome to the MTAlert App!"
 	puts 
 end
 
@@ -57,6 +57,7 @@ def verify_single_user(check)
 	else 
 		puts
 		puts "Invalid input. Please try again."
+		puts
 		puts "#{check.first.full_name}? (Y/N)"
 		verify_single_user(check)
 	end
@@ -123,6 +124,12 @@ def get_friend_interest
 	friend_input = gets.chomp.downcase
 	if friend_input == "y" || friend_input == "yes"
 		return
+	else
+		puts
+		puts "Okay, thanks for using the MTAlert App."
+		puts "Carly & Jess remind you to stand clear of the closing doors, please!"
+		puts
+		exit
 	end
 end
 
