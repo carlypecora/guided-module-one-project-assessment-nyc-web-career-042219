@@ -95,7 +95,7 @@ def get_commute_input
 	commute_input.upcase
 end
 
-def match_commute_input_to_line(commute_input)
+def match_commute_input_to_line(commute_input, user_obj)
 	match = get_status_alert.find do |line| 
 		line["name"].include?(commute_input)
 	end
@@ -104,9 +104,18 @@ def match_commute_input_to_line(commute_input)
 		puts "Invalid input."
 		train = Train.find_by(line: commute_input)
         Commute.where(train: train).destroy_all
+        Train.where(line: commute_input).destroy_all
 		new_commute_input = get_commute_input
-		match_commute_input_to_line(new_commute_input)
-		return
+		match_commute_input_to_line(new_commute_input, user_obj)
+		train_obj = Train.return_train_obj(new_commute_input)
+		new_com = Commute.find_or_create_by(user: user_obj, train: train_obj)
+		# binding.pry
+		train_obj.reload
+		user_obj.reload
+		new_com.reload
+		get_friend_interest(user_obj)
+		user_obj.fellow_users_on_commute(train_obj)
+		user_obj.view_profile?
 	end
 	status = match["status"]
 	message = match["text"]
@@ -165,7 +174,7 @@ def test
 	commute_input = get_commute_input
 	train_obj = Train.return_train_obj(commute_input)
 	commute_obj = Commute.find_or_create_by(user: user_obj, train: train_obj)
-	match_commute_input_to_line(commute_input)
+	match_commute_input_to_line(commute_input, user_obj)
 	get_friend_interest(user_obj)
 	user_obj.fellow_users_on_commute(train_obj)
 	user_obj.view_profile?

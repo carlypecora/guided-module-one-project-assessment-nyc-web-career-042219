@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
     end
 
     def self.selecting_saved_commute(user_obj, trains)
-        match_commute_input_to_line(trains[0])
+        match_commute_input_to_line(trains[0], user_obj)
         get_friend_interest(user_obj)
         user_obj.fellow_users_on_commute(Train.find_by(line: trains[0]))
         user_obj.view_profile?
@@ -101,10 +101,12 @@ class User < ActiveRecord::Base
         array = Commute.all.select do |commute|
             commute.train == train_obj && commute.user != self
         end
+        binding.pry
         if array.length > 0
-            string = array.map { |commute| commute.user.full_name }.join(", ")
             puts
-            puts string
+            puts array.map { |commute| commute.user.full_name }.join(", ")
+            puts
+            # puts string
             puts
             return
             # exit
