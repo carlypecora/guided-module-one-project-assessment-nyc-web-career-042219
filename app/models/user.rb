@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
     def self.welcome_and_create_new_user(first_name)
         puts "Welcome #{first_name}, please enter your last name."
         puts
-        lastname_input = gets.chomp
+        lastname_input = gets.chomp.capitalize
         user = User.create(first_name: first_name, last_name: lastname_input)
         user.save
         user
@@ -75,7 +75,7 @@ class User < ActiveRecord::Base
         puts
         puts "The #{trains_string}?"
         puts
-        response = gets.chomp
+        response = gets.chomp.downcase
     end
 
     def self.welcome_back(user_obj)
