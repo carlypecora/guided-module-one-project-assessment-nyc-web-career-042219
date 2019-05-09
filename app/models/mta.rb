@@ -16,6 +16,8 @@ require 'nokogiri'
 
 require 'annotate'
 
+require 'rainbow'
+
 
 def get_status_alert
 	data = Net::HTTP.get(URI.parse('http://web.mta.info/status/serviceStatus.txt'))
@@ -23,7 +25,7 @@ def get_status_alert
 end
 
 def welcome
-	puts "Welcome to the MTAlert App!"
+	puts Rainbow("Welcome to the MTAlert App!").blue
 	puts 
 end
 
@@ -124,11 +126,15 @@ def get_friend_interest(user_obj)
 	friend_input = gets.chomp.downcase
 	if friend_input == "y" || friend_input == "yes"
 		return
-	else
+	elsif friend_input == "n" || friend_input == "no"
 		puts
 		puts "Okay."
 		puts
 		user_obj.view_profile?
+	else
+		puts
+		puts "Invalid error. Pleae try again."
+		get_friend_interest(user_obj)
 	end
 end
 
