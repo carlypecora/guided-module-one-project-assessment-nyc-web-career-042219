@@ -127,6 +127,8 @@ class User < ActiveRecord::Base
          puts
          profile_input = gets.chomp.downcase
          profile_selection(profile_input)
+         view_profile?
+         exit
     end
 
     def profile_options
@@ -150,6 +152,9 @@ class User < ActiveRecord::Base
             self.update(first_name: "#{new_first_name}" )
         elsif input =="n" || input == "no"
             return
+        else 
+            puts "Invalid input. Please try again."
+            update_first_name
         end  
     end
 
@@ -161,7 +166,62 @@ class User < ActiveRecord::Base
             new_last_name = gets.chomp.capitalize
             self.update(last_name: "#{new_last_name}" )
         elsif input =="n" || input == "no"
-            view_profile?
+            return
+        else 
+            puts "Invalid input. Please try again."
+            update_last_name
+        end
+    end
+
+    def delete_commute_train
+        puts "Would you like to delete a train commute? (Y/N)"
+        puts
+        input = gets.chomp.downcase
+        if input == "y" || input == "yes"
+            puts 
+            puts "Which commute would you like to delete? (#)"
+            counter = 1
+            self.commutes.each do |commute|
+                puts "#{counter}. #{commute.train.line}"
+                counter += 1
+            end
+            commute_number = gets.chomp
+            self.commutes[commute_number.to_i - 1].destroy
+            self.reload
+            return
+        elsif input == "n" || input == "no"
+            return
+        else
+            puts "Invalid input. Please try again."
+            delete_commute_train
+        end
+    end
+
+    def add_commute_train
+        puts "Would you like to add a train commmute? (Y/N)"
+        second_input = gets.chomp.downcase
+        if second_input == "y" || second_input == "yes"
+            puts
+            puts "Which train would you like to add to your commute?"
+            puts
+            train_input = gets.chomp.upcase
+            match = get_status_alert.find do |line| 
+                line["name"].include?(train_input)
+            end
+            if !match.nil?
+                train_obj = Train.find_or_create_by(line: train_input)
+                Commute.find_or_create_by(user: self, train: train_obj)
+                self.reload
+            elsif match.nil?
+                puts"Invalid input. Please try again."
+                add_commute_train
+            end
+        elsif second_input == "n" || second_input == "no"
+            return
+        else
+            puts "Invalid input. Please try again."
+            puts
+            add_commute_train
         end
     end
 
@@ -175,21 +235,30 @@ class User < ActiveRecord::Base
             puts "Here are the trains you've taken:"
             self.trains.each { |train| puts "#{train.line}"}
             puts
-            view_profile?
+            return
         elsif option_number == "2"
             update_first_name
             update_last_name
         elsif option_number == "3"
             delete_commute_train
-            add_commute_train
+            add_commute_train           
         elsif option_number == "4"
             puts
             self.commutes.each do |commute|
                 puts "These are your friends that take the #{commute.train.line}:"
                 puts
-                commute.train.users.each {|user| puts "#{user.full_name}"}
-                puts
+                if commute.train.users.length == 1
+                    puts "No one else takes the #{commute.train.line}."
+                    puts
+                else 
+                    commute.train.users.each do |user| 
+                    if user != self 
+                        puts "#{user.full_name}"
+                        puts
+                    end
+                end
             end
+        end
         else
             puts "Invalid input. Please try again."
             new_option_number = gets.chomp
@@ -204,7 +273,8 @@ class User < ActiveRecord::Base
             options_arr = profile_options
             option_number = gets.chomp
             profile_function(option_number, options_arr)
-            exit
+            puts
+            # exit
         elsif profile_input == "n" || profile_input == "no"
             puts
             puts "Okay, thanks for using the MTAlert App.\nCarly & Jess remind you to stand clear of the closing doors, please!"
@@ -214,7 +284,7 @@ class User < ActiveRecord::Base
             puts
             puts "Invalid input. Please try again"
             puts
-            view_profile?
+            return
         end
     end
 
