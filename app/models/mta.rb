@@ -72,9 +72,15 @@ def verfiy_multiple_users(check)
 	user_input = gets.chomp.downcase
 	if user_input == "n" || user_input == "no"
 		User.welcome_and_create_new_user(check.first.first_name)
-	else
+	elsif user_input.to_i.to_s == user_input
 		User.welcome_back(check[user_input.to_i - 1])
 		check[user_input.to_i - 1]
+	else
+		puts
+		puts "Invalid input."
+		puts
+		check.each_with_index{ |user, index| puts "#{index + 1}. #{user.full_name}" }
+		verfiy_multiple_users(check)
 	end
 end
 
@@ -89,6 +95,13 @@ end
 def match_commute_input_to_line(commute_input)
 	match = get_status_alert.find do |line| 
 		line["name"].include?(commute_input)
+	end
+	if match.nil?
+		puts
+		puts "Invalid input."
+		new_commute_input = get_commute_input
+		match_commute_input_to_line(new_commute_input)
+		return
 	end
 	status = match["status"]
 	message = match["text"]
