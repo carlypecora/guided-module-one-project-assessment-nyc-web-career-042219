@@ -26,14 +26,11 @@ end
 
 def welcome
 	puts
-	# puts Rainbow("Welcome to the MTAlert App!").yellow
 	puts Rainbow("\nWelcome to the MTAlert App!").yellow.bright
 	puts Rainbow("Welcome to the MTAlert App!").yellow.bright
 	puts Rainbow("Welcome to the MTAlert App!").yellow.bright
-	# puts Rainbow("Welcome to the MTAlert App!").blue
 	puts Rainbow("Welcome to the MTAlert App!").blue.bright
 	puts Rainbow("Welcome to the MTAlert App!").blue.bright
-	# puts Rainbow("Welcome to the MTAlert App!").yellow
 	puts Rainbow("Welcome to the MTAlert App!").yellow.bright
 	puts Rainbow("Welcome to the MTAlert App!").black.bright
 	puts Rainbow("Welcome to the MTAlert App!").yellow.bright

@@ -139,10 +139,14 @@ class User < ActiveRecord::Base
     end
 
     def update_first_name
+        puts
         puts Rainbow("Would you like to update your first name? (Y/N)").bright
+        puts
         input = gets.chomp.downcase
         if input == "y" || input == "yes"
+            puts
             puts Rainbow("Please enter your new first name.").bright
+            puts
             new_first_name = gets.chomp.capitalize
             self.update(first_name: "#{new_first_name}" )
         elsif input =="n" || input == "no"
@@ -154,7 +158,9 @@ class User < ActiveRecord::Base
     end
 
     def update_last_name
+        puts
         puts Rainbow("Would you like to update your last name? (Y/N)").bright
+        puts
         input = gets.chomp.downcase
         if input == "y" || input == "yes"
             puts Rainbow("Please enter your new last name.").bright
