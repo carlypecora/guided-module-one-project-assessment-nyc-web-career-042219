@@ -309,6 +309,7 @@ class User < ActiveRecord::Base
             puts Rainbow("Okay, thanks for using the" + Rainbow(" MTA").blue + Rainbow("lert App").yellow.bright + ".").bright
             puts Rainbow("Carly & Jess remind you to stand clear of the closing doors, please!").cyan.bright
             puts
+            pid = fork{ exec 'afplay', "nyc.m4a" }
             puts
             puts
             exit
