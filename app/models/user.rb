@@ -118,7 +118,7 @@ class User < ActiveRecord::Base
     end
 
     def view_profile?
-         puts Rainbow("Would you like to view your user profile? (Y/N)").bright
+         puts Rainbow("Would you like to view your profile options? (Y/N)").bright
          puts
          profile_input = gets.chomp.downcase
          profile_selection(profile_input)
@@ -180,6 +180,13 @@ class User < ActiveRecord::Base
         puts
         input = gets.chomp.downcase
         if input == "y" || input == "yes"
+            if self.commutes.length == 0
+                # binding.pry
+                puts
+                puts Rainbow("You do not have any commutes to delete.").red
+                puts
+                return
+            end
             puts
             puts Rainbow("Which commute would you like to delete? (#)").bright
             puts
@@ -191,12 +198,23 @@ class User < ActiveRecord::Base
             puts
             puts
             commute_number = gets.chomp
+            range = self.commutes.length
+            if (1..range).include?(commute_number.to_i)
+                self.commutes[commute_number.to_i - 1].destroy
+                self.reload
+                self.commutes.each { |commute| commute.reload }
+                return
+            else
+                puts
+                puts Rainbow("Invalid input. Please try again.").red
+                puts
+                delete_commute_train
+            end
             self.commutes[commute_number.to_i - 1].destroy
             self.reload
             return
         elsif input == "n" || input == "no"
             return
-        #BUT THIS SHOULD WORK
         else
             puts
             puts Rainbow("Invalid input. Please try again.").red

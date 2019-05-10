@@ -182,6 +182,9 @@ def test
 	commute_input = get_commute_input
 	train_obj = Train.return_train_obj(commute_input)
 	commute_obj = Commute.find_or_create_by(user: user_obj, train: train_obj)
+	commute_obj.reload
+	user_obj.reload
+	train_obj.reload
 	match_commute_input_to_line(commute_input, user_obj)
 	get_friend_interest(user_obj)
 	user_obj.fellow_users_on_commute(train_obj)
