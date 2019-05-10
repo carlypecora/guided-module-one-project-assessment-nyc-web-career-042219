@@ -25,12 +25,23 @@ def get_status_alert
 end
 
 def welcome
-	puts Rainbow("Welcome to the MTAlert App!").blue
-	puts 
+	puts
+	# puts Rainbow("Welcome to the MTAlert App!").yellow
+	puts Rainbow("\nWelcome to the MTAlert App!").yellow.bright
+	puts Rainbow("Welcome to the MTAlert App!").yellow.bright
+	puts Rainbow("Welcome to the MTAlert App!").yellow.bright
+	# puts Rainbow("Welcome to the MTAlert App!").blue
+	puts Rainbow("Welcome to the MTAlert App!").blue.bright
+	puts Rainbow("Welcome to the MTAlert App!").blue.bright
+	# puts Rainbow("Welcome to the MTAlert App!").yellow
+	puts Rainbow("Welcome to the MTAlert App!").yellow.bright
+	puts Rainbow("Welcome to the MTAlert App!").black.bright
+	puts Rainbow("Welcome to the MTAlert App!").yellow.bright
+	puts
 end
 
 def get_firstname_input
-	puts "What is your first name?"
+	puts Rainbow("What is your first name?").bright
 	puts
 	firstname_input = gets.chomp
 	firstname_input.capitalize
@@ -48,29 +59,29 @@ def verify_user(firstname_input)
 end
 
 def verify_single_user(check)
-	puts 
+	puts
 	check
 	response = gets.chomp.downcase
-	if response == "n" || response == "no" 
+	if response == "n" || response == "no"
 		User.welcome_and_create_new_user(check.first.first_name)
-	elsif response == "y" || response == "yes" 
+	elsif response == "y" || response == "yes"
 		User.welcome_back(check[0])
 		check[0]
-	else 
+	else
 		puts
-		puts "Invalid input. Please try again."
+		puts Rainbow("Invalid input. Please try again.").red
 		puts
-		puts "#{check.first.full_name}? (Y/N)"
+		puts Rainbow("#{check.first.full_name}? (Y/N)").bright
 		verify_single_user(check)
 	end
 end
 
 def verfiy_multiple_users(check)
 	puts
-	puts "Which number are you? (#)"
-	puts 
-	puts "Or if you don't see yourself, enter N"
-	puts 
+	puts Rainbow("Which number are you? (#)").bright
+	puts
+	puts Rainbow("Or if you don't see yourself, enter N").bright
+	puts
 	check
 	user_input = gets.chomp.downcase
 	if user_input == "n" || user_input == "no"
@@ -80,7 +91,7 @@ def verfiy_multiple_users(check)
 		check[user_input.to_i - 1]
 	else
 		puts
-		puts "Invalid input."
+		puts Rainbow("Invalid input. Please try again.").red
 		puts
 		check.each_with_index{ |user, index| puts "#{index + 1}. #{user.full_name}" }
 		verfiy_multiple_users(check)
@@ -89,19 +100,19 @@ end
 
 def get_commute_input
 	puts
-	puts "What train line are you taking after class?"
-	puts 
+	puts Rainbow("What train line are you taking after class?").bright
+	puts
 	commute_input = gets.chomp
 	commute_input.upcase
 end
 
 def match_commute_input_to_line(commute_input, user_obj)
-	match = get_status_alert.find do |line| 
+	match = get_status_alert.find do |line|
 		line["name"].include?(commute_input)
 	end
 	if match.nil?
 		puts
-		puts "Invalid input."
+		puts Rainbow("Invalid input. Please try again.").red
 		train = Train.find_by(line: commute_input)
         Commute.where(train: train).destroy_all
         Train.where(line: commute_input).destroy_all
@@ -121,30 +132,30 @@ def match_commute_input_to_line(commute_input, user_obj)
 	message = match["text"]
 	if message.nil?
 		puts
-		puts status
+		puts Rainbow("#{status}").green.bright
 	else
 		puts
-		puts status
-		puts 
+		puts Rainbow("#{status}").red.bright
+		puts
 		puts Nokogiri::HTML(message).text
 	end
-end	
+end
 
 def get_friend_interest(user_obj)
 	puts
-	puts "Would you like to know who else takes your train? (Y/N)"
+	puts Rainbow("Would you like to know who else takes your train? (Y/N)").bright
 	puts
 	friend_input = gets.chomp.downcase
 	if friend_input == "y" || friend_input == "yes"
 		return
 	elsif friend_input == "n" || friend_input == "no"
 		puts
-		puts "Okay."
+		puts Rainbow("Okay.").bright
 		puts
 		user_obj.view_profile?
 	else
 		puts
-		puts "Invalid error. Pleae try again."
+		puts Rainbow("Invalid error. Please try again.").red
 		get_friend_interest(user_obj)
 	end
 end
@@ -179,6 +190,3 @@ def test
 	user_obj.fellow_users_on_commute(train_obj)
 	user_obj.view_profile?
 end
-
-
-
