@@ -13,13 +13,13 @@ class User < ActiveRecord::Base
         users = self.where(first_name: name)
         str = ""
         counter = 1
-        users.each do |user| 
+        users.each do |user|
             str += "#{counter}. #{user.full_name}\n"
             counter += 1
         end
         if counter == 2
             puts
-            puts "#{users[0].full_name}? (Y/N)"
+            puts Rainbow("#{users[0].full_name}? (Y/N)").bright
         else
             puts
             puts str
@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
         users
     end
 
+    # SPACING ISSUE HERE!!!!
     def self.create_new_user(fullname_input)
         first_name = fullname_input.split[0].capitalize
         last_name = fullname_input.split[1].capitalize
@@ -36,7 +37,8 @@ class User < ActiveRecord::Base
     end
 
     def self.welcome_and_create_new_user(first_name)
-        puts "Welcome #{first_name}, please enter your last name."
+        puts
+        puts Rainbow("Welcome #{first_name}, please enter your last name.").bright
         puts
         lastname_input = gets.chomp.capitalize
         user = User.create(first_name: first_name, last_name: lastname_input)
@@ -47,7 +49,7 @@ class User < ActiveRecord::Base
     def self.verify_train_selection(user_obj, trains_string, response, trains)
         if !trains_string.include?(response)
             puts
-            puts "Invalid input. Please try again."
+            puts Rainbow("Invalid input. Please try again.").red
             train = Train.find_by(line: response)
             # binding.pry
             Commute.where(train: train).destroy_all
@@ -69,7 +71,7 @@ class User < ActiveRecord::Base
 
     def self.get_train_selection(trains_string)
         puts
-        puts "The #{trains_string}?"
+        puts Rainbow("The #{trains_string}?").bright
         puts
         response = gets.chomp.upcase
     end
@@ -79,7 +81,7 @@ class User < ActiveRecord::Base
             trains = user_obj.commutes.map { |commute| commute.train.line }
             trains_string = trains.join(" or ")
             puts
-            puts "Welcome back, #{user_obj.first_name}! Will you be taking the #{trains_string}? (Y/N)"
+            puts Rainbow("Welcome back, #{user_obj.first_name}! Will you be taking the #{trains_string}? (Y/N)").bright
             puts
             response = gets.chomp.downcase
             if response == "n" || response == "no"
@@ -91,7 +93,7 @@ class User < ActiveRecord::Base
                 verify_train_selection(user_obj, trains_string, response, trains)
             else
                 puts
-                puts "Invalid input. Please try again."
+                puts Rainbow("Invalid input. Please try again.").red
                 self.welcome_back(user_obj)
             end
         end
@@ -101,27 +103,22 @@ class User < ActiveRecord::Base
         array = Commute.all.select do |commute|
             commute.train == train_obj && commute.user != self
         end
-        # binding.pry
         if array.length > 0
             puts
-            puts array.map { |commute| commute.user.full_name }.join(", ")
+            puts Rainbow(array.map { |commute| commute.user.full_name }.join(", ")).green
             puts
-            # puts string
             puts
             return
-            # exit
         else
             puts
-            puts "No one else is taking this train."
+            puts Rainbow("No one else is taking this train.").red
             puts
             view_profile?
-            # puts "Thanks for using MTA commute! Stand clear of the closing doors please."
-            # exit
         end
     end
 
     def view_profile?
-         puts "Would you like to view your user profile? (Y/N)"
+         puts Rainbow("Would you like to view your user profile? (Y/N)").bright
          puts
          profile_input = gets.chomp.downcase
          profile_selection(profile_input)
@@ -134,76 +131,85 @@ class User < ActiveRecord::Base
             "View your info.",
             "Update user name.",
             "Update your commmute trains.",
-            # "Delete one of your commute trains.", "Add a commute train."
             "View friends on a commute."
         ]
         options_arr.each_with_index { |option, index| puts "#{index + 1}. #{option}"}
+        puts
         options_arr
     end
 
     def update_first_name
-        puts "Would you like to update your first name? (Y/N)"
+        puts Rainbow("Would you like to update your first name? (Y/N)").bright
         input = gets.chomp.downcase
         if input == "y" || input == "yes"
-            puts "Please enter your new first name."
+            puts Rainbow("Please enter your new first name.").bright
             new_first_name = gets.chomp.capitalize
             self.update(first_name: "#{new_first_name}" )
         elsif input =="n" || input == "no"
             return
-        else 
-            puts "Invalid input. Please try again."
+        else
+            puts Rainbow("Invalid input. Please try again.").red
             update_first_name
-        end  
+        end
     end
 
     def update_last_name
-        puts "Would you like to update your last name? (Y/N)"
+        puts Rainbow("Would you like to update your last name? (Y/N)").bright
         input = gets.chomp.downcase
         if input == "y" || input == "yes"
-            puts "Please enter your new last name."
+            puts Rainbow("Please enter your new last name.").bright
             new_last_name = gets.chomp.capitalize
             self.update(last_name: "#{new_last_name}" )
         elsif input =="n" || input == "no"
             return
-        else 
-            puts "Invalid input. Please try again."
+        else
+            puts Rainbow("Invalid input. Please try again.").red
             update_last_name
         end
     end
 
     def delete_commute_train
-        puts "Would you like to delete a train commute? (Y/N)"
+        puts
+        puts Rainbow("Would you like to delete a train commute? (Y/N)").bright
         puts
         input = gets.chomp.downcase
         if input == "y" || input == "yes"
-            puts 
-            puts "Which commute would you like to delete? (#)"
+            puts
+            puts Rainbow("Which commute would you like to delete? (#)").bright
+            puts
             counter = 1
             self.commutes.each do |commute|
                 puts "#{counter}. #{commute.train.line}"
                 counter += 1
             end
+            puts
+            puts
             commute_number = gets.chomp
             self.commutes[commute_number.to_i - 1].destroy
             self.reload
             return
         elsif input == "n" || input == "no"
             return
+        #BUT THIS SHOULD WORK
         else
-            puts "Invalid input. Please try again."
+            puts
+            puts Rainbow("Invalid input. Please try again.").red
+            puts
             delete_commute_train
         end
     end
 
     def add_commute_train
-        puts "Would you like to add a train commmute? (Y/N)"
+        puts
+        puts Rainbow("Would you like to add a train commmute? (Y/N)").bright
+        puts
         second_input = gets.chomp.downcase
         if second_input == "y" || second_input == "yes"
             puts
-            puts "Which train would you like to add to your commute?"
+            puts Rainbow("Which train would you like to add to your commute?").bright
             puts
             train_input = gets.chomp.upcase
-            match = get_status_alert.find do |line| 
+            match = get_status_alert.find do |line|
                 line["name"].include?(train_input)
             end
             if !match.nil?
@@ -211,13 +217,13 @@ class User < ActiveRecord::Base
                 Commute.find_or_create_by(user: self, train: train_obj)
                 self.reload
             elsif match.nil?
-                puts"Invalid input. Please try again."
+                puts Rainbow("Invalid input. Please try again.").red
                 add_commute_train
             end
         elsif second_input == "n" || second_input == "no"
             return
         else
-            puts "Invalid input. Please try again."
+            puts Rainbow("Invalid input. Please try again.").red
             puts
             add_commute_train
         end
@@ -227,10 +233,10 @@ class User < ActiveRecord::Base
     def profile_function(option_number, options_arr)
         if option_number == "1"
             puts
-            puts "Your full name:"
+            puts Rainbow("Your full name:").bright
             puts "#{self.full_name}"
             puts
-            puts "Here are the trains you've taken:"
+            puts Rainbow("Here are the trains you've taken:").bright
             self.trains.each { |train| puts "#{train.line}"}
             puts
             return
@@ -239,26 +245,26 @@ class User < ActiveRecord::Base
             update_last_name
         elsif option_number == "3"
             delete_commute_train
-            add_commute_train           
+            add_commute_train
         elsif option_number == "4"
             puts
             self.commutes.each do |commute|
-                puts "These are your friends that take the #{commute.train.line}:"
+                puts Rainbow("These are your friends that take the #{commute.train.line}:").bright
                 puts
                 if commute.train.users.length == 1
-                    puts "No one else takes the #{commute.train.line}."
+                    puts Rainbow("No one else takes the #{commute.train.line}.").red
                     puts
-                else 
-                    commute.train.users.each do |user| 
-                    if user != self 
-                        puts "#{user.full_name}"
+                else
+                    commute.train.users.each do |user|
+                    if user != self
+                        puts Rainbow("#{user.full_name}").green
                         puts
                     end
                 end
             end
         end
         else
-            puts "Invalid input. Please try again."
+            puts Rainbow("Invalid input. Please try again.").red
             new_option_number = gets.chomp
             profile_function(new_option_number, options_arr)
         end
@@ -267,7 +273,8 @@ class User < ActiveRecord::Base
     def profile_selection(profile_input)
         if profile_input == "y" || profile_input == "yes"
             puts
-            puts "Great, #{self.first_name}. What would you like to do? (#)"
+            puts Rainbow("Great, #{self.first_name}. What would you like to do? (#)").bright
+            puts
             options_arr = profile_options
             option_number = gets.chomp
             profile_function(option_number, options_arr)
@@ -275,12 +282,15 @@ class User < ActiveRecord::Base
             # exit
         elsif profile_input == "n" || profile_input == "no"
             puts
-            puts "Okay, thanks for using the MTAlert App.\nCarly & Jess remind you to stand clear of the closing doors, please!"
+            puts Rainbow("Okay, thanks for using the" + Rainbow(" MTA").blue + Rainbow("lert App").yellow.bright + ".").bright
+            puts Rainbow("Carly & Jess remind you to stand clear of the closing doors, please!").cyan.bright
+            puts
+            puts
             puts
             exit
         else
             puts
-            puts "Invalid input. Please try again"
+            puts Rainbow("Invalid input. Please try again.").red
             puts
             return
         end
