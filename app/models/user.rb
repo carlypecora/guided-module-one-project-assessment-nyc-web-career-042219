@@ -49,9 +49,9 @@ class User < ActiveRecord::Base
             puts
             puts "Invalid input. Please try again."
             train = Train.find_by(line: response)
-            binding.pry
-            Commute.destroy_all(train: train)
-            self.reload
+            # binding.pry
+            Commute.where(train: train).destroy_all
+            user_obj.reload
             get_train_selection(trains_string)
             selecting_saved_commute(user_obj, trains)
         else
@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
         array = Commute.all.select do |commute|
             commute.train == train_obj && commute.user != self
         end
-        binding.pry
+        # binding.pry
         if array.length > 0
             puts
             puts array.map { |commute| commute.user.full_name }.join(", ")
